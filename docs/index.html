@@ -7,7 +7,7 @@ var chat = document.getElementById("chat");
 var id = Math.random().toString(32).substring(2);
 document.getElementById("id").innerHTML = 'ID : ' + id;
 // WS接続（Achexへ接続）
-ws = new WebSocket("wss://cloud.achex.ca/chat");
+ws = new WebSocket("wss://cloud.achex.ca/chatkaeru");
 // WS接続
 ws.onopen = e => {
   console.log('open');
