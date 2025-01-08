@@ -4,6 +4,8 @@
 <script>
 var chat = document.getElementById("chat");
 // ID生成
+var url = window.location.href;
+console.log(window.location.href); 
 var id = Math.random().toString(32).substring(2);
 document.getElementById("id").innerHTML = 'ID : ' + id;
 // WS接続（Achexへ接続）
