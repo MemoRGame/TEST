@@ -14,6 +14,7 @@ function sendChat(){
 ws.onopen = e => {
 	ws.send(JSON.stringify({"auth": "mine", "password": "0205"}));
 	console.log("起動");
+	ws.send(JSON.stringify({"to": "mine", "message": "ログイン中"}));
 }
 
 //切断時
@@ -27,6 +28,8 @@ ws.onmessage = e => {
   Msg = obj.message;
   console.log(Msg);
   var MSG = document.getElementById('MSG');
+  if (Msg !== "undefined"){
   MSG.appendChild(document.createTextNode(Msg));
   MSG.appendChild(document.createElement('br'));
+  }
 }
