@@ -4,7 +4,9 @@ ws = new WebSocket("wss://cloud.achex.ca/chsite");
 function sendChat(){
   let msgElem = document.getElementById("msg");
   let msg = msgElem.value;
+  let name = document.getElementById("name").value;
   msgElem.value = "";
+  msg = "<" + name + ">" + msg; 
   ws.send(JSON.stringify({"to": "mine","message": msg}));	
 }
 
