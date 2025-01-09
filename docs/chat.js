@@ -1,73 +1,25 @@
-var url = window.location.href;
-if (url == "https://originalvideo.f5.si/") { // ここで条件を設定
-  var chat = document.getElementById("chat");
+ws = new WebSocket("wss://cloud.achex.ca/kaburanaiyouni");
 
-  // ID生成
-  console.log(window.location.href); 
-  var id = Math.random().toString(32).substring(2);
-  document.getElementById("id").innerHTML = 'ID : ' + id;
+sendMsg = new Date() + "_" + new Date().getTime();
+gotMsg = new Array();
+activeUserCount = 0;
 
-  // WS接続（Achexへ接続）
-  ws = new WebSocket("wss://cloud.achex.ca/chatkaeru");
+ws.onmessage = e => {
+	var obj = JSON.parse(e.data);
+	if (obj.message == sendMsg) {
+		activeUserCount++;
+		document.getElementById("activeUsers").innerText = activeUserCount;
+	} else if (obj.message != undefined && gotMsg.filter(msg => msg = obj.message).length == 0) {
+		gotMsg.push(obj.message);
+		ws.send(JSON.stringify({"to": "hogehoge", "message": obj.message}));
+	}
+}
 
-  // WS接続
-  ws.onopen = e => {
-    console.log('open');
-    chat.innerHTML = 'You ID : ' + id + '（' + getDateTime() + '）';
-    // 認証（auth, passwordは何でもOK）
-    ws.send(JSON.stringify({"auth": "myaccount_test", "password": "1234"}));
-    ws.send(JSON.stringify({"to": "myaccount_test", "id": id, "message": 'Login'}));
-  }
+ws.onopen = e => {
+	ws.send(JSON.stringify({"auth": "hogehoge", "password": "1234"}));
+	ws.send(JSON.stringify({"to": "hogehoge", "message": sendMsg}));
+}
 
-  // メッセージ受信
-  ws.onmessage = e => {
-    console.log('message');
-    console.log(e);
-    var obj = JSON.parse(e.data);
-    if (obj.auth == 'OK') {
-      // 認証OK
-      return;
-    }
-    addChat(obj.id, obj.message);
-  }
-
-  // WS切断
-  ws.onclose = e => {
-    console.log('closed');
-    ws.send(JSON.stringify({"to": "myaccount_test", "id": id, "message": 'Logout'}));
-  }
-
-  // メッセージ送信
-  function sendChat() {
-    let msgElem = document.getElementById("msg");
-    let msg = msgElem.value;
-    msgElem.value = "";
-    ws.send(JSON.stringify({"to": "myaccount_test", "id": id, "message": msg}));
-  }
-
-  // チャット
-  function addChat(id, msg) {
-    chat.innerHTML = id + ' : ' + msg + '（' + getDateTime() + '）' + '<br>' + chat.innerHTML;
-  }
-
-  // 1桁の数字を0埋めで2桁にする
-  var toDoubleDigits = function(num) {
-    num += "";
-    if (num.length === 1) {
-      num = "0" + num;
-    }
-    return num;
-  };
-
-  // 日時取得 YYYY/MM/DD HH:DD:MI:SS形式で取得
-  var getDateTime = function() {
-    var date = new Date();
-    var year = date.getFullYear();
-    var month = toDoubleDigits(date.getMonth() + 1);
-    var day = toDoubleDigits(date.getDate());
-    var hour = toDoubleDigits(date.getHours());
-    var min = toDoubleDigits(date.getMinutes());
-    var sec = toDoubleDigits(date.getSeconds());
-    return year + '/' + month + '/' + day + ' ' + hour + ':' + min + ':' + sec;
-  };
+ws.onclosed = e => {
+console.log('closed');
 }
