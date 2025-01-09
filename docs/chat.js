@@ -1,29 +1,28 @@
-ws = new WebSocket("wss://cloud.achex.ca/kaburanaiyouni");
+ws = new WebSocket("wss://cloud.achex.ca/chsite");
 
+//メッセージ送信
 function sendChat(){
   let msgElem = document.getElementById("msg");
   let msg = msgElem.value;
-
-	
+  msgElem.value = "";
+  ws.send(JSON.stringify({"to": "mine","message": msg}));	
 }
 
-
-ws.onmessage = e => {
-	var obj = JSON.parse(e.data);
-	if (obj.message == sendMsg) {
-		activeUserCount++;
-		document.getElementById("activeUsers").innerText = activeUserCount;
-	} else if (obj.message != undefined && gotMsg.filter(msg => msg = obj.message).length == 0) {
-		gotMsg.push(obj.message);
-		ws.send(JSON.stringify({"to": "hogehoge", "message": obj.message}));
-	}
-}
-
+//サーバー起動時
 ws.onopen = e => {
-	ws.send(JSON.stringify({"auth": "hogehoge", "password": "1234"}));
-	ws.send(JSON.stringify({"to": "hogehoge", "message": sendMsg}));
+	ws.send(JSON.stringify({"auth": "mine", "password": "0205"}));
+	ws.send(JSON.stringify({"to": "mine", "message": "Login"}));
+	console.log("起動完了");
 }
 
+//切断時
 ws.onclosed = e => {
 console.log('closed');
+}
+
+//メッセージ受信
+ws.onmessage = e => {
+  var obj = JSON.parse(e.data);
+  Msg = obj.message;
+  console.log(Message);
 }
