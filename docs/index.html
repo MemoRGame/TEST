@@ -20,8 +20,13 @@ function sendChat(){
   let msg = msgElem.value;
   let name = document.getElementById("name").value;
   msgElem.value = "";
+  if (name == "" || msg == ""){
+     alert(名前とメッセージは必ず入力してください)
+  }
+  else {
   msg = "<" + name + ">" + msg; 
   ws.send(JSON.stringify({"to": "mine","message": msg}));	
+  }
 }
 
 //サーバー起動時
