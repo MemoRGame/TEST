@@ -27,4 +27,7 @@ ws.onmessage = e => {
   var obj = JSON.parse(e.data);
   Msg = obj.message;
   console.log(Msg);
+  var MSG = document.getElementById('MSG');
+  MSG.appendChild(document.createTextNode(Msg));
+  MSG.appendChild(document.createElement('br'));
 }
