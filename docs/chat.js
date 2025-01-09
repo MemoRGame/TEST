@@ -15,8 +15,8 @@ if (url == "https://originalvideo.f5.si/") { // ここで条件を設定
     console.log('open');
     chat.innerHTML = 'You ID : ' + id + '（' + getDateTime() + '）';
     // 認証（auth, passwordは何でもOK）
-    ws.send(JSON.stringify({"auth": "hoge", "password": "1234"}));
-    ws.send(JSON.stringify({"to": "hoge", "id": id, "message": 'Login'}));
+    ws.send(JSON.stringify({"auth": "myaccount_test", "password": "1234"}));
+    ws.send(JSON.stringify({"to": "myaccount_test", "id": id, "message": 'Login'}));
   }
 
   // メッセージ受信
@@ -34,7 +34,7 @@ if (url == "https://originalvideo.f5.si/") { // ここで条件を設定
   // WS切断
   ws.onclose = e => {
     console.log('closed');
-    ws.send(JSON.stringify({"to": "hoge", "id": id, "message": 'Logout'}));
+    ws.send(JSON.stringify({"to": "myaccount_test", "id": id, "message": 'Logout'}));
   }
 
   // メッセージ送信
@@ -42,7 +42,7 @@ if (url == "https://originalvideo.f5.si/") { // ここで条件を設定
     let msgElem = document.getElementById("msg");
     let msg = msgElem.value;
     msgElem.value = "";
-    ws.send(JSON.stringify({"to": "hoge", "id": id, "message": msg}));
+    ws.send(JSON.stringify({"to": "myaccount_test", "id": id, "message": msg}));
   }
 
   // チャット
