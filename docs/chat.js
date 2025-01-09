@@ -13,7 +13,6 @@ function sendChat(){
 //サーバー起動時
 ws.onopen = e => {
 	ws.send(JSON.stringify({"auth": "mine", "password": "0205"}));
-	ws.send(JSON.stringify({"to": "mine", "message": "Login"}));
 	console.log("起動");
 }
 
