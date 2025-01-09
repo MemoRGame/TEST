@@ -28,7 +28,7 @@ function sendChat(){
 ws.onopen = e => {
 	ws.send(JSON.stringify({"auth": "mine", "password": "0205"}));
 	console.log("起動");
-	ws.send(JSON.stringify({"to": "mine", "message": "アカウントがログイン中..."}));
+	ws.send(JSON.stringify({"to": "mine", "message": "アカウントが参加しました"}));
 }
 
 //切断時
