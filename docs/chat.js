@@ -24,5 +24,5 @@ console.log('closed');
 ws.onmessage = e => {
   var obj = JSON.parse(e.data);
   Msg = obj.message;
-  console.log(Message);
+  console.log(Msg);
 }
