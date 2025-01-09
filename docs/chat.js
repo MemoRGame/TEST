@@ -12,7 +12,7 @@ function sendChat(){
 ws.onopen = e => {
 	ws.send(JSON.stringify({"auth": "mine", "password": "0205"}));
 	ws.send(JSON.stringify({"to": "mine", "message": "Login"}));
-	console.log("起動完了");
+	console.log("起動");
 }
 
 //切断時
