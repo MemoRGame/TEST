@@ -28,7 +28,7 @@ ws.onmessage = e => {
   Msg = obj.message;
   console.log(Msg);
   var MSG = document.getElementById('MSG');
-  if (Msg !== "undefined"){
+  if (Msg !== undefined){
   MSG.appendChild(document.createTextNode(Msg));
   MSG.appendChild(document.createElement('br'));
   }
