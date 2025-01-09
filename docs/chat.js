@@ -1,8 +1,12 @@
 ws = new WebSocket("wss://cloud.achex.ca/kaburanaiyouni");
 
-sendMsg = new Date() + "_" + new Date().getTime();
-gotMsg = new Array();
-activeUserCount = 0;
+function sendChat(){
+  let msgElem = document.getElementById("msg");
+  let msg = msgElem.value;
+
+	
+}
+
 
 ws.onmessage = e => {
 	var obj = JSON.parse(e.data);
