@@ -16,22 +16,22 @@ ws = new WebSocket("wss://cloud.achex.ca/testcount");
 
 sendMsg = new Date() + "_" + new Date().getTime();
 gotMsg = new Array();
-activeUserCount = 0;
 
 ws.onmessage = e => {
 	var obj = JSON.parse(e.data);
 	if (obj.message == sendMsg) {
 		activeUserCount++;
-		console.log(activeUserCount);
 	} else if (obj.message != undefined && gotMsg.filter(msg => msg = obj.message).length == 0) {
 		gotMsg.push(obj.message);
 		ws.send(JSON.stringify({"to": "testcount", "message": obj.message}));
 	}
+	console.log(activeUserCount);
 }
 
 ws.onopen = e => {
 	ws.send(JSON.stringify({"auth": "testcount", "password": "1234"}));
 	ws.send(JSON.stringify({"to": "testcount", "message": sendMsg}));
+	activeUserCount = 0;
 }
 
 ws.onclosed = e => {
