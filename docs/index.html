@@ -14,38 +14,28 @@
 <script>
 ws = new WebSocket("wss://cloud.achex.ca/chsite");
 
-//メッセージ送信
-function sendChat(){
-  let msgElem = document.getElementById("msg");
-  let msg = msgElem.value;
-  let name = document.getElementById("name").value;
-  msgElem.value = "";
-  msg = "<" + name + ">" + msg; 
-  ws.send(JSON.stringify({"to": "mine","message": msg}));	
-}
+sendMsg = new Date() + "_" + new Date().getTime();
+gotMsg = new Array();
+activeUserCount = 0;
 
-//サーバー起動時
-ws.onopen = e => {
-	ws.send(JSON.stringify({"auth": "mine", "password": "0205"}));
-	console.log("起動");
-	ws.send(JSON.stringify({"to": "mine", "message": "アカウントがログイン中..."}));
-}
-
-//切断時
-ws.onclosed = e => {
-        console.log('closed');
-}
-
-//メッセージ受信
 ws.onmessage = e => {
-  var obj = JSON.parse(e.data);
-  Msg = obj.message;
-  console.log(Msg);
-  var MSG = document.getElementById('MSG');
-  if (Msg !== undefined){
-  MSG.appendChild(document.createTextNode(Msg));
-  MSG.appendChild(document.createElement('br'));
-  }
+	var obj = JSON.parse(e.data);
+	if (obj.message == sendMsg) {
+		activeUserCount++;
+		console.log("同時接続人数:" + activeUserCount)
+	} else if (obj.message != undefined && gotMsg.filter(msg => msg = obj.message).length == 0) {
+		gotMsg.push(obj.message);
+		ws.send(JSON.stringify({"to": "testactive", "message": obj.message}));
+	}
+}
+
+ws.onopen = e => {
+	ws.send(JSON.stringify({"auth": "testactive", "password": "1234"}));
+	ws.send(JSON.stringify({"to": "testactive", "message": sendMsg}));
+}
+
+ws.onclosed = e => {
+console.log('closed');
 }
 </script>
 </html>
