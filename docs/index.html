@@ -12,29 +12,28 @@
   <div id="MSG"></div>
 </body>
 <script>
-ws = new WebSocket("wss://cloud.achex.ca/chsite");
-var Name = Math.random().toString(32).substring(2);
-let array = [];
-let user = 0;
-	
-//メッセージを受信
+ws = new WebSocket("wss://cloud.achex.ca/testcount");
+
+sendMsg = new Date() + "_" + new Date().getTime();
+gotMsg = new Array();
+activeUserCount = 0;
+
 ws.onmessage = e => {
 	var obj = JSON.parse(e.data);
-	if (obj.message == "login") {
-		array.push(Name);
-		ws.send(JSON.stringify({"to": "testactive", "message": "returnIN", "array": array}));
-	}else if(obj.message == "returnIN"){
-		console.log(obj.array)
+	if (obj.message == sendMsg) {
+		activeUserCount++;
+		console.log(avtiveUserCount);
+	} else if (obj.message != undefined && gotMsg.filter(msg => msg = obj.message).length == 0) {
+		gotMsg.push(obj.message);
+		ws.send(JSON.stringify({"to": "testcount", "message": obj.message}));
 	}
 }
 
-//サーバー起動時
 ws.onopen = e => {
-	ws.send(JSON.stringify({"auth": "testactive", "password": "1234"}));
-	ws.send(JSON.stringify({"to": "testactive", "message": "login"}));
+	ws.send(JSON.stringify({"auth": "testcount", "password": "1234"}));
+	ws.send(JSON.stringify({"to": "testcount", "message": sendMsg}));
 }
 
-//切断時
 ws.onclosed = e => {
 console.log('closed');
 }
