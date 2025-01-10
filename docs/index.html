@@ -9,6 +9,7 @@
   <h1>アクティブユーザー数: <span id="userCount">0</span></h1>
 
   <script>
+    console.log(MyName);
     // WebSocketの設定
     const ws = new WebSocket("wss://cloud.achex.ca/testcount");
 
@@ -29,7 +30,7 @@
     ws.onopen = () => {
       const myName = generateRandomName();
       console.log("自分の名前:", myName);
-      
+
       // サーバーに自分の名前を送信
       ws.send(JSON.stringify({ action: "login", name: myName }));
 
@@ -41,10 +42,13 @@
     // WebSocketのメッセージを受け取ったときの処理
     ws.onmessage = (event) => {
       const message = JSON.parse(event.data);
+      console.log("受け取ったメッセージ:", message);
 
-      if (message.action === "login" && !activeUsers.includes(message.name)) {
-        activeUsers.push(message.name);  // 新しいユーザーの名前を配列に追加
-        updateUserCount();
+      if (message.action === "login") {
+        if (!activeUsers.includes(message.name)) {
+          activeUsers.push(message.name);  // 新しいユーザーの名前を配列に追加
+          updateUserCount();
+        }
       }
 
       if (message.action === "logout") {
@@ -68,4 +72,3 @@
   </script>
 </body>
 </html>
-
