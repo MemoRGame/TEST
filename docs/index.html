@@ -23,11 +23,13 @@ ws.onmessage = e => {
     Name.push(obj.msg)
     Name = [...new Set(Name)];
     console.log(Name);
+　　document.getElementById("Count").innerHTML = "現在のアクティブユーザーは　" + Name.length + "　人です";
   }
   else 	if (obj.message == "Logout") {
   Name = Name.filter(item => item !== obj.msg);
   Name = [...new Set(Name)];
   console.log(Name);
+　document.getElementById("Count").innerHTML = "現在のアクティブユーザーは　" + Name.length + "　人です";
   }
 }
 
@@ -46,8 +48,6 @@ ws.send(JSON.stringify({"to": "testcount", "message": "Logout", "msg": name}));
 window.addEventListener('beforeunload', function (event) {
 ws.send(JSON.stringify({"to": "testcount", "message": "Logout", "msg": name}));
 });
-
-document.getElementById("Count").innerHTML = "現在のアクティブユーザーは　" + Name.length + "　人です";
   </script>
 </body>
 </html>
