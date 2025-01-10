@@ -16,7 +16,6 @@ ws = new WebSocket("wss://cloud.achex.ca/chsite");
 var Name = Math.random().toString(32).substring(2);
 let array = [];
 let user = 0;
-console.log(user);
 	
 //メッセージを受信
 ws.onmessage = e => {
@@ -26,6 +25,7 @@ ws.onmessage = e => {
 		ws.send(JSON.stringify({"to": "testactive", "message": "returnIN", "array": array}));
 	}else if(obj.message == "returnIN"){
                 user = user + 1;
+		console.log(user);
 	}
 }
 
