@@ -45,9 +45,12 @@ ws.onclosed = e => {
 ws.send(JSON.stringify({"to": "testcount", "message": "Logout", "msg": name}));
 }
 
-window.addEventListener('beforeunload', function (event) {
-ws.send(JSON.stringify({"to": "testcount", "message": "Logout", "msg": name}));
-});
+window.addEventListener('pagehide', function () {
+   // ページが非表示になった場合（モバイルでも反応します）
+   ws.send(JSON.stringify({"to": "testcount", "message": "Logout", "msg": name}));
+  });
+
+
   </script>
 </body>
 </html>
