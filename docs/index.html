@@ -22,6 +22,7 @@ ws.onmessage = e => {
 	}
   else if (obj.message == "SendName"){
     Name.push(obj.msg)
+    Name = [...new Set(Name)];
     console.log(Name);
   }
 }
