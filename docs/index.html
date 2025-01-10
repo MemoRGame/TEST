@@ -19,7 +19,7 @@ ws.onmessage = e => {
 	var obj = JSON.parse(e.data);
 	if (obj.message == "Login") {
 	Name = [];
- 	ws.send(JSON.stringify({"to": "testcount", "message": "SendName", "array": Name, "msg": obj.msg}));
+ 	ws.send(JSON.stringify({"to": "testcount", "message": "SendName", "array": Name, "msg": name}));
 	}
   else if (obj.message == "SendName"){
     Array = obj.array;
@@ -30,7 +30,7 @@ ws.onmessage = e => {
 
 ws.onopen = e => {
 	ws.send(JSON.stringify({"auth": "testcount", "password": "1234"}));
-	ws.send(JSON.stringify({"to": "testcount", "message": "Login", "msg": name}));
+	ws.send(JSON.stringify({"to": "testcount", "message": "Login"}));
 }
 
 ws.onclosed = e => {
