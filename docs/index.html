@@ -25,25 +25,16 @@ ws.onmessage = e => {
     console.log(Name);
 　　document.getElementById("Count").innerHTML = "現在のアクティブユーザーは　" + Name.length + "　人です";
   }
-  else 	if (obj.message == "Logout") {
-  Name = Name.filter(item => item !== obj.msg);
-  Name = [...new Set(Name)];
-  console.log(Name);
-　document.getElementById("Count").innerHTML = "現在のアクティブユーザーは　" + Name.length + "　人です";
-  }
 }
 
 //ログイン
-ws.onopen = e => {
-	Name = [];
-	ws.send(JSON.stringify({"auth": "testcount", "password": "1234"}));
-	ws.send(JSON.stringify({"to": "testcount", "message": "Login"}));
-}
-
-//ログアウト
-ws.onclosed = e => {
-ws.send(JSON.stringify({"to": "testcount", "message": "Logout", "msg": name}));
-}
+setInterval(() => {
+  Name = [];  // Name 配列をリセット
+  // WebSocket サーバーに再度認証を送信
+  ws.send(JSON.stringify({"auth": "testcount", "password": "1234"}));
+  // ログインメッセージを送信
+  ws.send(JSON.stringify({"to": "testcount", "message": "Login"}));
+}, 1000);  // 1000ms = 1秒ごとに実行
   </script>
 </body>
 </html>
