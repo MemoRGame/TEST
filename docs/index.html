@@ -43,6 +43,10 @@ ws.onopen = e => {
 ws.onclosed = e => {
 ws.send(JSON.stringify({"to": "testcount", "message": "Logout", "msg": name}));
 }
+
+window.addEventListener('beforeunload', function (event) {
+ws.send(JSON.stringify({"to": "testcount", "message": "Logout", "msg": name}));
+});
   </script>
 </body>
 </html>
