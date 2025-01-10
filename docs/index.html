@@ -26,6 +26,7 @@ ws.onmessage = e => {
 	}else if(obj.message == "returnIN"){
 		user = user + 1;
                 totaluser = array.length
+		console.log("user:" + user + " totaluser:" + totaluser)
 		checkAllUsersProcessed();
 	}
 }
