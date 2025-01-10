@@ -24,13 +24,14 @@ ws.onmessage = e => {
 		array.push(Name);
 		ws.send(JSON.stringify({"to": "testactive", "message": "returnIN", "array": array}));
 	}else if(obj.message == "returnIN"){
-                user = array.length
+		user = user + 1;
+                totaluser = array.length
 		checkAllUsersProcessed();
 	}
 }
 
 function checkAllUsersProcessed() {
-    if (user === totalUsers) {
+    if (user === totaluser) {
         console.log(user);  // ユーザー数が全員分処理された時に一度だけ表示
     }
 }
