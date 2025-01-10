@@ -19,12 +19,12 @@ ws.onmessage = e => {
 	var obj = JSON.parse(e.data);
 	if (obj.message == "Login") {
 	Name = [];
- 	ws.send(JSON.stringify({"to": "testcount", "message": "SendName", "array": Name}));
+ 	ws.send(JSON.stringify({"to": "testcount", "message": "SendName", "array": Name, "msg": obj.msg}));
 	}
   else if (obj.message == "SendName"){
     Array = obj.array;
     Array.push(obj.msg);
-    console.log(name + "," + obj.msg);
+    console.log(Array);
   }
 }
 
