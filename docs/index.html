@@ -14,7 +14,7 @@ const ws = new WebSocket("wss://cloud.achex.ca/testcount");
 
 var name = Math.random().toString(32).substring(2);
 
-
+document.getElementById("Count").innerHTML = "現在のアクティブユーザーは　" + Name.length + "　人です";
 
 ws.onmessage = e => {
 	var obj = JSON.parse(e.data);
@@ -30,7 +30,6 @@ ws.onmessage = e => {
   Name = Name.filter(item => item !== obj.msg);
   Name = [...new Set(Name)];
   console.log(Name);
-  document.getElementById("Count").innerHTML = "現在のアクティブユーザーは　" + Name.length + "　人です";
   }
 }
 
