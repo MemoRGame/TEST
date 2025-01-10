@@ -1,3 +1,4 @@
+ws = new WebSocket("wss://cloud.achex.ca/chsite");
 
 //メッセージ送信
 function sendChat(){
