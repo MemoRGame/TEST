@@ -25,16 +25,23 @@ ws.onmessage = e => {
     Name = [...new Set(Name)];
     console.log(Name);
   }
+  else 	if (obj.message == "Logout") {
+  Name = array.filter(item => item !== obj.msg);
+  Name = [...new Set(Name)];
+  console.log(Name);	
+  }
 }
 
+//ログイン
 ws.onopen = e => {
 	Name = [];
 	ws.send(JSON.stringify({"auth": "testcount", "password": "1234"}));
 	ws.send(JSON.stringify({"to": "testcount", "message": "Login"}));
 }
 
+//ログアウト
 ws.onclosed = e => {
-console.log('closed');
+ws.send(JSON.stringify({"to": "testcount", "message": "Logout", "msg": name}));
 }
   </script>
 </body>
