@@ -34,7 +34,7 @@ setInterval(() => {
   ws.send(JSON.stringify({"auth": "testcount", "password": "1234"}));
   // ログインメッセージを送信
   ws.send(JSON.stringify({"to": "testcount", "message": "Login"}));
-}, 1000);  // 1000ms = 1秒ごとに実行
+}, 100);  // 100ms = 0.1秒ごとに実行
   </script>
 </body>
 </html>
