@@ -13,27 +13,27 @@
 </body>
 <script>
 ws = new WebSocket("wss://cloud.achex.ca/chsite");
-
-sendMsg = new Date() + "_" + new Date().getTime();
-gotMsg = new Array();
-activeUserCount = 0;
-
+var Name = Math.random().toString(32).substring(2);
+let array = [];
+	
+//メッセージを受信
 ws.onmessage = e => {
 	var obj = JSON.parse(e.data);
-	if (obj.message == sendMsg) {
-		activeUserCount++;
-		console.log("同時接続人数:" + activeUserCount)
-	} else if (obj.message != undefined && gotMsg.filter(msg => msg = obj.message).length == 0) {
-		gotMsg.push(obj.message);
-		ws.send(JSON.stringify({"to": "testactive", "message": obj.message}));
+	if (obj.message == "login") {
+		array.push(Name);
+		ws.send(JSON.stringify({"to": "testactive", "message": "returnIN", "array": array}));
+	}else if(obj.message == "returnIN"){
+                console.log(array.length)
 	}
 }
 
+//サーバー起動時
 ws.onopen = e => {
 	ws.send(JSON.stringify({"auth": "testactive", "password": "1234"}));
-	ws.send(JSON.stringify({"to": "testactive", "message": sendMsg}));
+	ws.send(JSON.stringify({"to": "testactive", "message": "login"}));
 }
 
+//切断時
 ws.onclosed = e => {
 console.log('closed');
 }
