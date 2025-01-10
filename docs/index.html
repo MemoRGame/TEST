@@ -22,7 +22,7 @@ ws.onmessage = e => {
 	var obj = JSON.parse(e.data);
 	if (obj.message == sendMsg) {
 		activeUserCount++;
-		console.log(avtiveUserCount);
+		console.log(activeUserCount);
 	} else if (obj.message != undefined && gotMsg.filter(msg => msg = obj.message).length == 0) {
 		gotMsg.push(obj.message);
 		ws.send(JSON.stringify({"to": "testcount", "message": obj.message}));
