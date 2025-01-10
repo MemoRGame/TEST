@@ -9,7 +9,6 @@
   <h1>アクティブユーザー数: <span id="userCount">0</span></h1>
 
   <script>
-    console.log(myName);
     // WebSocketの設定
     const ws = new WebSocket("wss://cloud.achex.ca/testcount");
 
@@ -68,6 +67,7 @@
     // アクティブユーザー数を更新する関数
     function updateUserCount() {
       document.getElementById('userCount').textContent = activeUsers.length;
+      console.log(activeUsers);
     }
   </script>
 </body>
