@@ -26,7 +26,7 @@ ws.onmessage = e => {
     console.log(Name);
   }
   else 	if (obj.message == "Logout") {
-  Name = array.filter(item => item !== obj.msg);
+  Name = Name.filter(item => item !== obj.msg);
   Name = [...new Set(Name)];
   console.log(Name);	
   }
