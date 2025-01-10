@@ -43,13 +43,15 @@
       const message = JSON.parse(event.data);
       console.log("受け取ったメッセージ:", message);
 
+      // 他のユーザーがログインした場合、名前を配列に追加
       if (message.action === "login") {
         if (!activeUsers.includes(message.name)) {
-          activeUsers.push(message.name);  // 新しいユーザーの名前を配列に追加
+          activeUsers.push(message.name);
           updateUserCount();
         }
       }
 
+      // 他のユーザーがログアウトした場合、名前を配列から削除
       if (message.action === "logout") {
         const index = activeUsers.indexOf(message.name);
         if (index !== -1) {
@@ -67,7 +69,6 @@
     // アクティブユーザー数を更新する関数
     function updateUserCount() {
       document.getElementById('userCount').textContent = activeUsers.length;
-      console.log(activeUsers);
     }
   </script>
 </body>
