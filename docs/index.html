@@ -6,12 +6,17 @@
   <title>アクティブユーザー管理</title>
 </head>
 <body>
+<input type="button" onClick="onClick()">	
 
   <script>
 // WebSocketの設定
 const ws = new WebSocket("wss://cloud.achex.ca/testcount");
 
 var name = Math.random().toString(32).substring(2);
+
+function onClick(){
+console.log(Name);
+}	
 
 ws.onmessage = e => {
 	var obj = JSON.parse(e.data);
