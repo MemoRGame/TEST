@@ -6,70 +6,32 @@
   <title>アクティブユーザー管理</title>
 </head>
 <body>
-  <h1>アクティブユーザー数: <span id="userCount">0</span></h1>
 
   <script>
-    // WebSocketの設定
-    const ws = new WebSocket("wss://cloud.achex.ca/testcount");
+// WebSocketの設定
+const ws = new WebSocket("wss://cloud.achex.ca/testcount");
 
-    // アクティブユーザーの名前を管理する配列
-    let activeUsers = [];
+var name = Math.random().toString(32).substring(2);
 
-    // ランダムな英数字の名前を生成
-    function generateRandomName() {
-      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-      let name = '';
-      for (let i = 0; i < 10; i++) {
-        name += characters.charAt(Math.floor(Math.random() * characters.length));
-      }
-      return name;
-    }
+ws.onmessage = e => {
+	var obj = JSON.parse(e.data);
+	if (obj.message == "Login") {
+ 	ws.send(JSON.stringify({"to": "testcount", "message": "SendName"}));    
+	}
+  else if (obj.message == "SendName"){
+    Name.push(obj.array);
+  }
+}
 
-    // WebSocketの接続が開かれたときの処理
-    ws.onopen = () => {
-      const myName = generateRandomName();
-      console.log("自分の名前:", myName);
+ws.onopen = e => {
+  Name = [];
+	ws.send(JSON.stringify({"auth": "testcount", "password": "1234"}));
+	ws.send(JSON.stringify({"to": "testcount", "message": "Login", "array": Name}));
+}
 
-      // サーバーに自分の名前を送信
-      ws.send(JSON.stringify({ action: "login", name: myName }));
-
-      // ログイン時に自分の名前を配列に追加
-      activeUsers.push(myName);
-      updateUserCount();
-    };
-
-    // WebSocketのメッセージを受け取ったときの処理
-    ws.onmessage = (event) => {
-      const message = JSON.parse(event.data);
-      console.log("受け取ったメッセージ:", message);
-
-      // 他のユーザーがログインした場合、名前を配列に追加
-      if (message.action === "login") {
-        if (!activeUsers.includes(message.name)) {
-          activeUsers.push(message.name);
-          updateUserCount();
-        }
-      }
-
-      // 他のユーザーがログアウトした場合、名前を配列から削除
-      if (message.action === "logout") {
-        const index = activeUsers.indexOf(message.name);
-        if (index !== -1) {
-          activeUsers.splice(index, 1);  // ユーザーがログアウトしたら名前を配列から削除
-          updateUserCount();
-        }
-      }
-    };
-
-    // WebSocketの接続が閉じられたときの処理
-    ws.onclose = () => {
-      console.log("WebSocket接続が閉じられました");
-    };
-
-    // アクティブユーザー数を更新する関数
-    function updateUserCount() {
-      document.getElementById('userCount').textContent = activeUsers.length;
-    }
+ws.onclosed = e => {
+console.log('closed');
+}
   </script>
 </body>
 </html>
