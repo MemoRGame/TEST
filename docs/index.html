@@ -24,7 +24,7 @@ ws.onmessage = e => {
   else if (obj.message == "SendName"){
     Array = obj.array;
     Array.push(obj.msg);
-    console.log(Array);
+    console.log(name + "," + obj.msg);
   }
 }
 
