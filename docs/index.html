@@ -14,19 +14,21 @@ const ws = new WebSocket("wss://cloud.achex.ca/testcount");
 
 var name = Math.random().toString(32).substring(2);
 
+
+
 ws.onmessage = e => {
 	var obj = JSON.parse(e.data);
 	if (obj.message == "Login") {
- 	ws.send(JSON.stringify({"to": "testcount", "message": "SendName"}));    
+	Name = [];
+ 	ws.send(JSON.stringify({"to": "testcount", "message": "SendName"}));
 	}
   else if (obj.message == "SendName"){
-    let Name = Name.push(msg.Name);
+    Name = Name.push(msg.Name);
 	  console.log(Name);
   }
 }
 
 ws.onopen = e => {
-	let Name = [];
 	ws.send(JSON.stringify({"auth": "testcount", "password": "1234"}));
 	ws.send(JSON.stringify({"to": "testcount", "message": "Login", "msg": Name}));
 }
