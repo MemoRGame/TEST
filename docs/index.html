@@ -25,6 +25,12 @@ ws.onmessage = e => {
     console.log(Name);
 　　document.getElementById("Count").innerHTML = "現在のアクティブユーザーは　" + Name.length + "　人です";
   }
+    else if (obj.message == "Logout"){
+    Name = list(filter(lambda x: x != obj.msg, Name))
+    Name = [...new Set(Name)];
+    console.log(Name);
+　　document.getElementById("Count").innerHTML = "現在のアクティブユーザーは　" + Name.length + "　人です";
+  }	
 }
 
 //ログイン
@@ -35,6 +41,12 @@ ws.onmessage = e => {
   // ログインメッセージを送信
   ws.send(JSON.stringify({"to": "testcount", "message": "Login"}));
   }
+
+//ページのリロード
+window.addEventListener('beforeunload', function (event) {
+  event.preventDefault(); // デフォルトの動作（アンロード）の進行を止める
+  ws.send(JSON.stringify({"to": "testcount", "message": "Logout", "msg": name}));
+});
   </script>
 </body>
 </html>
