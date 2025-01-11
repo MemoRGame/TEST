@@ -42,14 +42,10 @@ ws.onmessage = e => {
   ws.send(JSON.stringify({"to": "testcount", "message": "Login"}));
   }
 
-//ページのリロード
+//ログアウト
 window.addEventListener('pagehide', function (event) {
   ws.send(JSON.stringify({"to": "testcount", "message": "Logout", "msg": name}));
 });
-
-window.onbeforeunload = function(e) {
-  ws.send(JSON.stringify({"to": "testcount", "message": "Logout", "msg": name}));
-}
   </script>
 </body>
 </html>
