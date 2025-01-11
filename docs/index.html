@@ -26,7 +26,7 @@ ws.onmessage = e => {
 　　document.getElementById("Count").innerHTML = "現在のアクティブユーザーは　" + Name.length + "　人です";
   }
     else if (obj.message == "Logout"){
-    Name = list(filter(lambda x: x != obj.msg, Name))
+　　Name = Name.filter(item => item !== obj.msg);　
     Name = [...new Set(Name)];
     console.log(Name);
 　　document.getElementById("Count").innerHTML = "現在のアクティブユーザーは　" + Name.length + "　人です";
