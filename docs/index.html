@@ -44,7 +44,6 @@ ws.onmessage = e => {
 
 //ページのリロード
 window.addEventListener('beforeunload', function (event) {
-  event.preventDefault(); // デフォルトの動作（アンロード）の進行を止める
   ws.send(JSON.stringify({"to": "testcount", "message": "Logout", "msg": name}));
 });
 
