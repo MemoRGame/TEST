@@ -43,7 +43,7 @@ ws.onmessage = e => {
   }
 
 //ページのリロード
-window.addEventListener('beforeunload', function (event) {
+window.addEventListener('pagehide', function (event) {
   ws.send(JSON.stringify({"to": "testcount", "message": "Logout", "msg": name}));
 });
 
