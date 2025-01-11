@@ -28,13 +28,13 @@ ws.onmessage = e => {
 }
 
 //ログイン
-setInterval(() => {
+  ws.onopen = e => {
   Name = [];  // Name 配列をリセット
   // WebSocket サーバーに再度認証を送信
   ws.send(JSON.stringify({"auth": "testcount", "password": "1234"}));
   // ログインメッセージを送信
   ws.send(JSON.stringify({"to": "testcount", "message": "Login"}));
-}, 100);  // 100ms = 0.1秒ごとに実行
+  }
   </script>
 </body>
 </html>
