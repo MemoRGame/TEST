@@ -31,7 +31,7 @@
 //インポートするための文
             // Import the functions you need from the SDKs you need
             import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
-            import { getDatabase, ref, push, set, onChildAdded, remove, onChildRemoved, onValue } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-database.js"; // 追加
+            import { getDatabase, ref, push, set, onChildAdded, remove, onChildRemoved, onValue , onChildChanged} from "https://www.gstatic.com/firebasejs/11.2.0/firebase-database.js"; // 追加
             import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-analytics.js";
             // TODO: Add SDKs for Firebase products that you want to use
             // https://firebase.google.com/docs/web/setup#available-libraries
@@ -55,12 +55,23 @@
             const db = getDatabase(app);
 
 //実際の処理を記述↓↓
+
+//クライアントのipアドレスを取得
+let IP;
+fetch('https://api.ipify.org?format=json')
+  .then(response => response.json())
+  .then(data => {
+    IP = data.ip;
+    IP = IP.replace(/\./g, '-');
+    IPset();
+  })
+  .catch(error => console.error('Error:', error));
 //グローバル変数を宣言
 let ID = Math.random().toString(32).substring(2);//IDをランダムで生成(識別のため)
 let IdArray = [];//IDを格納する配列
 let IDroom = ref(db, 'userID');;//IDを保存するルーム
-let MSGroom =  ref(db, 'MSG');//MSGを保存するルーム
-let year,month,day,hours,minutes,seconds,count;
+let MSGroom = ref(db, 'MSG');//MSGを保存するルーム
+let year,month,day,hours,minutes,seconds,count,Nameroom;
 let Activeuser = document.getElementById('activeuser');
 Activeuser.textContent = "(現在のアクティブユーザー数は..人です。)";
         
@@ -71,6 +82,8 @@ function send() {
     if (text !== "" && name !== ""){
       updatatime();
       push(MSGroom, {Name:name, Type:"MSG", Text:text, Year:year, Month:month, Day:day, Hours:hours, Minutes:minutes, Seconds:seconds});
+      Nameroom = ref(db, 'IProom/' + IP);
+      set(Nameroom, {Name:name});
       document.getElementById('text').value = '';
     }
     else {
@@ -98,6 +111,16 @@ function reset(){
     else {
       alert("履歴を削除する場合は名前を入力してください")
     }
+}
+
+//ログイン履歴があれば名前を引き継ぐ関数
+function IPset(){
+Nameroom = ref(db, 'IProom/' + IP);
+onChildAdded(Nameroom, function (snapshot) {
+	let data = snapshot.val();
+  document.getElementById("name").value = data;
+});
+
 }
 
 //MSG受信処理
