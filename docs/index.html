@@ -8,8 +8,8 @@
         <strong><div id="helloID"></div></strong>
         <div class="chat-box" id="chat-box" name="talkpage"></div>
         <textarea id="MessageText" class="MessageText" placeholder="メッセージを入力..." name="talkpage"></textarea>
-        <p id="roomDetail" name="talkpage">あなたは現在公開ルームに参加しています。トークルームに参加したい場合は下のテキストボックスにルームIDを入力してください</p>
-        <br><input type="text" placeholder="ルーム番号を入力してください(1-10文字)" class="no-spin" id="roomID" name="talkpage"><button class="join" id="join" name="talkpage">参加</button>
+        <p id="roomDetail" name="talkpage">あなたは現在公開ルームに参加しています。</p>
+        <br><input type="text" placeholder="ルーム番号を入力してください(1-10文字)" id="roomID" name="talkpage"><button class="join" id="join" name="talkpage">参加</button>
         <h1 id="TalkingSite" name="startpage">トークサイト</h1> 
         <input type="text" class="userName" placeholder="ユーザー名を入力してください(3-10文字)" name="startpage" id="userName">
         <button id="TalkingStart" name="startpage">トークを始める</button>
@@ -155,7 +155,7 @@ function join(){
         privateroom = ref(db, 'chatsite/message/privateroom/' + ToroomID);//MSGを保存するルーム
         document.getElementById('roomID').value = '';
         document.getElementById("chat-box").textContent = ``;
-        document.getElementById('roomDetail').innerHTML = `あなたは現在 ${ToroomID} ルームに参加しています。別のトークルームに参加したい場合は下のテキストボックスにルームIDを入力してください`;
+        document.getElementById('roomDetail').innerHTML = `あなたは現在 ${ToroomID} ルームに参加しています。`;
         progress="Privateroom"
         //MSG受信処理
         onChildAdded(privateroom, function (snapshot) {
