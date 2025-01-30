@@ -1,6 +1,6 @@
 .userName{
-    width:1000px;
-    height:100px;
+    width:65vw;
+    height:15vh;
     position:absolute;
     top: 50%;
     left: 50%;
@@ -10,11 +10,11 @@
 }
 
 #TalkingStart {
-    width: 1000px; /* ボタンの幅も入力フィールドと同じに */
-    height: 100px; /* ボタンの高さ */
-    font-size: 50px; /* フォントサイズ */
+    width: 65vw; /* ボタンの幅も入力フィールドと同じに */
+    height: 15vh; /* ボタンの高さ */
+    font-size: 10vh; /* フォントサイズ */
     position: absolute;
-    top: calc(50% + 120px); /* ユーザー名入力ボックスの下に配置 */
+    top: calc(50% + 15vh); /* ユーザー名入力ボックスの下に配置 */
     left: 50%;
     transform: translateX(-50%); /* 横方向の中央揃え */
     background-color: #4CAF50;
@@ -23,113 +23,104 @@
     border-radius: 5px;
     cursor: pointer;
 }
-
-/* ボタンにカーソルを合わせたとき（ホバー時）のスタイル */
-#TalkingStart:hover {
-    background-color: #45a049;
-}
     
 /* ボタンがクリックされているとき（アクティブ時）のスタイル */
 #TalkingStart:active {
     background-color: #388e3c;
     transform: scale(0.98); /* クリック時に少し縮小する */
     position: absolute;
-    top: calc(50% + 120px); /* ユーザー名入力ボックスの下に配置 */
+    top: calc(50% + 15vh); /* ユーザー名入力ボックスの下に配置 */
     left: 50%;
     transform: translateX(-50%);
 }
 
 #TalkingSite{
-    font-size: 100px; /* フォントサイズ */
+    font-size: 8vw; /* フォントサイズ */
     position: absolute;
-    top: calc(50% - 300px); /* ユーザー名入力ボックスの下に配置 */
+    top: calc(50% - 45vh); /* ユーザー名入力ボックスの下に配置 */
     left: 50%;
     transform: translateX(-50%); /* 横方向の中央揃え */
-    display: flex;
-    justify-content: center; /* 横方向の中央揃え */
-    align-items: center;     /* 縦方向の中央揃え */
     color: black;
     border: none;
 }
 
+#helloID{
+    font-size:5vh;
+}
+
 /* トークボックスの基本スタイル */
 .chat-box {
-    width:1450px;                /* 横幅 */
-    height: 500px;               /* 高さ */
+    width:95vw;                /* 横幅 */
+    height: 60vh;               /* 高さ */
     border: 2px solid #ccc;      /* 枠線 */
-    padding: 10px;               /* 内側の余白 */
+    padding: 1vw;               /* 内側の余白 */
     background-color: #f9f9f9;   /* 背景色 */
     overflow-y: auto;            /* 縦方向にスクロールできる */
     overflow-x: hidden;          /* 横方向のスクロールは隠す */
     position: relative;          /* 相対位置でスクロール位置を調整 */
     display: none;
     position: absolute;
-    top: calc(10%); /* ユーザー名入力ボックスの下に配置 */
+    top: calc(10vh); /* ユーザー名入力ボックスの下に配置 */
     left: 50%;
     transform: translateX(-50%); /* 横方向の中央揃え */
 }
 
 .MessageText {
-    width:1472px;                /* 横幅 */
-    height: 50px;               /* 高さ */
+    width:95vw;                /* 横幅 */
+    height: 10vh;               /* 高さ */
     border: 2px solid black;      /* 枠線 */
-    padding: 10px;               /* 内側の余白 */
+    padding: 1vw;               /* 内側の余白 */
     background-color: #f9f9f9;   /* 背景色 */
     overflow-y: auto;            /* 縦方向にスクロールできる */
     overflow-x: hidden;          /* 横方向のスクロールは隠す */
     position: relative;          /* 相対位置でスクロール位置を調整 */
     display: none;
     position: absolute;
-    top: calc(82%); /* ユーザー名入力ボックスの下に配置 */
+    top: calc(70vh); /* ユーザー名入力ボックスの下に配置 */
     left: 50%;
     transform: translateX(-50%); /* 横方向の中央揃え */
-    font-size:30px;
-}
-
-#helloID{
-    font-size:50px;
-}
-
-#roomID{
-    width:310px;                /* 横幅 */
-    height: 20px;               /* 高さ */
-    border: 2px solid black;      /* 枠線 */
-    padding: 10px;               /* 内側の余白 */
-    background-color: #f9f9f9;   /* 背景色 */
-    display: none;
-    position: absolute;
-    top: calc(95%); /* ユーザー名入力ボックスの下に配置 */
-    left: 2%;
-    font-size:15px;
-}
-
-.join{
-    width:75px;                /* 横幅 */
-    height: 20px;               /* 高さ */
-    border: 2px solid black;      /* 枠線 */
-    padding: 10px;               /* 内側の余白 */
-    background-color: #f9f9f9;   /* 背景色 */
-    display: none;
-    position: absolute;
-    top: calc(95%); /* ユーザー名入力ボックスの下に配置 */
-    left: 22.2%;
-    text-align: center;
-    line-height: 4px; /* 高さに合わせて行間を設定 */
-    font-size:20px;
+    font-size:5vh;
 }
 
 #roomDetail{
-    padding: 10px;               /* 内側の余白 */
+    padding: 1vw;               /* 内側の余白 */
     display: none;
     position: absolute;
-    top: calc(85%); /* ユーザー名入力ボックスの下に配置 */
+    top: calc(75vh); /* ユーザー名入力ボックスの下に配置 */
     left: 2%;
-    font-size:20px;  
+    font-size:3vh;  
 }
 
-.no-spin::-webkit-inner-spin-button,
-.no-spin::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-    -moz-appearance:textfield;
+#roomID{
+    width:20vw;                /* 横幅 */
+    height: 5vh;               /* 高さ */
+    border: 2px solid black;      /* 枠線 */
+    background-color: #f9f9f9;   /* 背景色 */
+    display: none;
+    position: absolute;
+    top: calc(85vh); /* ユーザー名入力ボックスの下に配置 */
+    left: 2.5%;
+    font-size:2vh;
 }
+
+.join{
+    width:5vw;                /* 横幅 */
+    height: 5vh;               /* 高さ */
+    border: 2px solid black;      /* 枠線 */
+    background-color: #f9f9f9;   /* 背景色 */
+    display: none;
+    position: absolute;
+    top: calc(85vh); /* ユーザー名入力ボックスの下に配置 */
+    left: 22.2%;
+    text-align: center;
+    font-size:3vh;
+}
+
+/* ボタンにカーソルを合わせたとき（ホバー時）のスタイル */
+#TalkingStart:hover {
+    background-color: #45a049;
+}
+
+* {
+    box-sizing: border-box;
+  }
