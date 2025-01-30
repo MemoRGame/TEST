@@ -1,33 +1,19 @@
-<!DOCTYPE html>
-<html lang="ja">
-  <head>
-    <title>チャットサイト</title>
-    <style>
-.button {
-  width: 90px; /* 幅を100ピクセルに設定 */
-  height: 30px; /* 高さを30ピクセルに設定 */
-}
-
-.text {
-  width: 300px; /* 幅を100ピクセルに設定 */
-  height: 30px; /* 高さを30ピクセルに設定 */
-}
-
-.activeuser {
-    display: inline-block;
-    vertical-align: middle; /* 必要に応じて垂直方向の調整 */
-  }
-    </style>
-  </head>
-  <body>
-    <span>チャットサイト</span><div id="activeuser" class="activeuser"></div>
-    <br>
-    <input type="text" id="name" placeholder="名前" class="text">
-    <input type="button" id="send" value="送信" class="button"><br>
-    <input type="text" id="text" placeholder="メッセージ" class="text">
-    <input type="button" id="reset" value="履歴全削除" class="button">
-    <div id="MSG"></div>
-    <script type="module">
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>チャットサイト</title>
+        <link href="style.css" rel="stylesheet">
+    </head>
+    <body>
+        <strong><div id="helloID"></div></strong>
+        <div class="chat-box" id="chat-box" name="talkpage"></div>
+        <textarea id="MessageText" class="MessageText" placeholder="メッセージを入力..." name="talkpage"></textarea>
+        <p id="roomDetail" name="talkpage">あなたは現在公開ルームに参加しています。トークルームに参加したい場合は下のテキストボックスにルームIDを入力してください</p>
+        <br><input type="text" placeholder="ルーム番号を入力してください(1-10文字)" class="no-spin" id="roomID" name="talkpage"><button class="join" id="join" name="talkpage">参加</button>
+        <h1 id="TalkingSite" name="startpage">トークサイト</h1> 
+        <input type="text" class="userName" placeholder="ユーザー名を入力してください(3-10文字)" name="startpage" id="userName">
+        <button id="TalkingStart" name="startpage">トークを始める</button>
+        <script type="module">
 //インポートするための文
             // Import the functions you need from the SDKs you need
             import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
@@ -55,135 +41,145 @@
             const db = getDatabase(app);
 
 //実際の処理を記述↓↓
+const EnteruserName = document.querySelector('[id="userName"]');
+const privateroomID = document.querySelector(`[id="roomID"]`)
+let year,month,day,hours,minutes,seconds,userName,progress,ToroomID,privateroom;
+let messageroom = ref(db, 'chatsite/message/publicroom');//MSGを保存するルーム
+let count = 0;
 
-//クライアントのipアドレスを取得
-let IP;
-fetch('https://api.ipify.org?format=json')
-  .then(response => response.json())
-  .then(data => {
-    IP = data.ip;
-    IP = IP.replace(/\./g, '-');
-    IPset();
-  })
-  .catch(error => console.error('Error:', error));
-//グローバル変数を宣言
-let ID = Math.random().toString(32).substring(2);//IDをランダムで生成(識別のため)
-let IdArray = [];//IDを格納する配列
-let IDroom = ref(db, 'userID');;//IDを保存するルーム
-let MSGroom = ref(db, 'MSG');//MSGを保存するルーム
-let year,month,day,hours,minutes,seconds,count,Nameroom;
-let Activeuser = document.getElementById('activeuser');
-Activeuser.textContent = "(現在のアクティブユーザー数は..人です。)";
-        
-//メッセージ送信処理
-function send() {
-  const text = document.getElementById('text').value;
-  const name = document.getElementById('name').value;
-    if (text !== "" && name !== ""){
-      updatatime();
-      push(MSGroom, {Name:name, Type:"MSG", Text:text, Year:year, Month:month, Day:day, Hours:hours, Minutes:minutes, Seconds:seconds});
-      Nameroom = ref(db, 'IProom/' + IP);
-      set(Nameroom, {Name:name});
-      document.getElementById('text').value = '';
+//スタートページのボタンが押されたら呼び出される関数
+function StartClick(){
+    userName = document.getElementById('userName').value;
+    if(3 <= userName.length && userName.length <= 10 ){
+        let StartPages = document.querySelectorAll('[name="startpage"]');
+        wait();
+
+        // 取得した要素を非表示にする
+        StartPages.forEach(function(StartPage) {
+        StartPage.style.display = "none";
+        progress="Publicroom";
+        TalkStart();
+        });
     }
-    else {
-      alert("名前またはメッセージを入力してください");
+    else if(userName.length < 3){
+        alert("ユーザネームが短すぎます。")
     }
+    else if(userName.length > 10){
+        alert("ユーザーネームが長すぎます。")
+    }
+}
+
+//ユーザーネームが登録されトークが始まるときに呼び出される関数
+function TalkStart(){
+    document.getElementById("helloID").textContent = `ようこそ${userName}さん`;
+    // name属性が'talkpage'の要素をすべて取得
+    let TalkPages = document.querySelectorAll('[name="talkpage"]');
+
+    // 各要素のdisplayを'block'にして表示
+    TalkPages.forEach(function(TalkPage) {
+        TalkPage.style.display = 'block';
+    });
+}
+
+function wait(){
+        //MSG受信処理
+        onChildAdded(messageroom, function (snapshot) {
+            if(progress==="Publicroom"){
+            let data = snapshot.val();
+            let chatbox = document.getElementById('chat-box');
+            if (data.Name !== undefined && data.Text !== undefined && data.Type == "MSG"){
+                let msg = `<${data.Name}> ${data.Text} ${data.Year}/${data.Month}/${data.Day}/${data.Hours}:${data.Minutes}:${data.Seconds}`;
+                chatbox.appendChild(document.createTextNode(msg));
+                chatbox.appendChild(document.createElement('br'));
+            }
+            }
+        });
+}
+
+EnteruserName.addEventListener('keydown', function(event) {
+    if (event.key === "Enter") {
+        StartClick();
+    }
+});
+
+privateroomID.addEventListener('keydown', function(event) {
+    if (event.key === "Enter") {
+        join();
+    }
+});
+
+// textarea 要素を取得
+const MessageText = document.getElementById("MessageText");
+
+// Enter キーが押されたときの処理
+MessageText.addEventListener("keydown", function(event) {
+    // Shift が押されていない Enter キーを押した場合、改行を防止
+    if (event.key === "Enter" && !event.shiftKey) {
+        sendMessage();
+        event.preventDefault();  // Enter キーのデフォルト動作（改行）をキャンセル
+    }
+});
+
+function sendMessage(){
+    updatatime();
+    const text = document.getElementById('MessageText').value;
+    if(progress==="Publicroom"){
+    push(messageroom, {Name:userName, Type:"MSG", Text:text, Year:year, Month:month, Day:day, Hours:hours, Minutes:minutes, Seconds:seconds});
+    }
+    else if(progress==="Privateroom"){
+    console.log(ToroomID);
+    let privateroom = ref(db, 'chatsite/message/privateroom/' + ToroomID);//MSGを保存するルーム
+    push(privateroom, {Name:userName, Type:"MSG", Text:text, Year:year, Month:month, Day:day, Hours:hours, Minutes:minutes, Seconds:seconds});
+}
+    document.getElementById('MessageText').value = '';
 }
 
 //時間を更新する関数
 function updatatime(){
-  const currentDate = new Date();
-  year = currentDate.getFullYear();  //西暦
-  month = currentDate.getMonth() + 1;  //月 
-  day = currentDate.getDate();  //日
-  hours = currentDate.getHours();  //時間
-  minutes = currentDate.getMinutes();  //分
-  seconds = currentDate.getSeconds();  //秒
+    const currentDate = new Date();
+    year = currentDate.getFullYear();  //西暦
+    month = currentDate.getMonth() + 1;  //月 
+    day = currentDate.getDate();  //日
+    hours = currentDate.getHours();  //時間
+    minutes = currentDate.getMinutes();  //分
+    seconds = currentDate.getSeconds();  //秒
 }
 
-//履歴を削除する関数
-function reset(){
-  const name = document.getElementById('name').value;
-    if (name !== ""){
-      push(MSGroom, {Name: name, Type:"remove"});
+function join(){
+    count++;
+    let i = count;
+    ToroomID = document.getElementById('roomID').value;
+    ToroomID = ToroomID.toString();
+    console.log(ToroomID);
+    if(1 <= ToroomID.length && ToroomID.length <= 10){
+        privateroom = ref(db, 'chatsite/message/privateroom/' + ToroomID);//MSGを保存するルーム
+        document.getElementById('roomID').value = '';
+        document.getElementById("chat-box").textContent = ``;
+        document.getElementById('roomDetail').innerHTML = `あなたは現在 ${ToroomID} ルームに参加しています。別のトークルームに参加したい場合は下のテキストボックスにルームIDを入力してください`;
+        progress="Privateroom"
+        //MSG受信処理
+        onChildAdded(privateroom, function (snapshot) {
+        if(progress==="Privateroom" && count <= i){
+        let data = snapshot.val();
+        let chatbox = document.getElementById('chat-box');
+        if (data.Name !== undefined && data.Text !== undefined && data.Type == "MSG"){
+        let msg = `<${data.Name}> ${data.Text} ${data.Year}/${data.Month}/${data.Day}/${data.Hours}:${data.Minutes}:${data.Seconds}`;
+                chatbox.appendChild(document.createTextNode(msg));
+                chatbox.appendChild(document.createElement('br'));
+            }
+            }
+        });
     }
-    else {
-      alert("履歴を削除する場合は名前を入力してください")
+    else if(ToroomID.length < 1){
+        alert("ルームIDが短すぎます。")
+    }
+    else if(ToroomID.length > 10){
+        alert("ルームIDが長すぎます。")
     }
 }
 
-//ログイン履歴があれば名前を引き継ぐ関数
-function IPset(){
-Nameroom = ref(db, 'IProom/' + IP);
-onChildAdded(Nameroom, function (snapshot) {
-	let data = snapshot.val();
-  document.getElementById("name").value = data;
-});
-
-}
-
-//MSG受信処理
-onChildAdded(MSGroom, function (snapshot) {
-	let data = snapshot.val();
-  let MSG = document.getElementById('MSG');
-    if (data.Name !== undefined && data.Text !== undefined && data.Type == "MSG"){
-      let msg = `<${data.Name}> ${data.Text} ${data.Year}/${data.Month}/${data.Day}/${data.Hours}:${data.Minutes}:${data.Seconds}`;
-      MSG.appendChild(document.createTextNode(msg));
-      MSG.appendChild(document.createElement('br'));
-    }
-    else if (data.Name !== undefined && data.Type == "remove"){
-      remove(MSGroom);
-      MSG.textContent = data.Name + "が履歴を削除しました";
-      MSG.appendChild(document.createElement('br'));
-    }
-});
-
-//enterで送信
-document.addEventListener('keydown', function(event) {
-  if (event.key === 'Enter') {
-    send();
-  }
-});
-
-//IDの削除+追加+取得
-setInterval(function() {
-  const currentDate = new Date();
-  const seconds = currentDate.getSeconds();
-    if(count !== undefined){
-      if(count !== seconds){
-        count = seconds;
-          if(seconds % 3 == 0){
-            remove(IDroom);
-            IdArray=[];
-          }
-          else if(seconds % 3 == 1){
-            push(IDroom, {ID:ID});
-          }
-          else if(seconds % 3 == 2){
-            const Activeusercount = IdArray.length;
-              if (Activeusercount > 0){
-                Activeuser.textContent = `(現在のアクティブユーザー数は${Activeusercount}人です。)`;
-              }
-              else{
-              Activeuser.textContent = "(現在のアクティブユーザー数は..人です。)";  
-              }
-          }
-      }
-    }
-    else{
-      count = seconds;
-    }
-}, 1);
-
-onChildAdded(IDroom, function (snapshot) {
-	let data = snapshot.val();
-  IdArray.push(data.ID);
-});
-
-// ボタンにイベントリスナーを追加
-document.getElementById("send").addEventListener("click", send);
-document.getElementById("reset").addEventListener("click", reset);
-  </script>
-  </body>
+document.getElementById("TalkingStart").addEventListener("click", StartClick);
+document.getElementById("join").addEventListener("click", join);
+</script>
+    </body>
 </html>
