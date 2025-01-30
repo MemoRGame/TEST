@@ -124,3 +124,7 @@
 * {
     box-sizing: border-box;
   }
+
+.activeDiv{
+    display: flex;  /* 子要素を横並びに */
+}
